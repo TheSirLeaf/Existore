@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Existore - Ofertas</title>
+  <script>
+    try {
+      var _t = localStorage.getItem('lojaTechTheme');
+      if (_t) document.documentElement.setAttribute('data-theme', _t);
+    } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo"><span class="logo-mark" aria-hidden="true">⚙️</span> <span class="logo-word">Existore</span></div>
+    <nav class="main-nav">
+      <a href="index.html">Inicial</a>
+      <a href="about.html">Quem Somos</a>
+      <a href="ofertas.html" class="active">Ofertas</a>
+      <a href="profile.html">Perfil</a>
+    </nav>
+    <div class="header-actions">
+      <div class="menu-wrapper">
+        <button id="menuToggle" class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" title="Menu">
+          <span class="hamburger" aria-hidden="true"> <span></span><span></span><span></span> </span>
+        </button>
+        <div id="menuPanel" class="menu-panel" aria-hidden="true">
+          <div class="menu-head">
+            <strong>Configurações</strong>
+            <small class="menu-sub">Tema e país</small>
+          </div>
+          <div class="menu-body">
+            <div class="theme-switcher">
+              <label for="themeSelect" class="sr-only">Tema</label>
+              <select id="themeSelect" aria-label="Selecionar tema">
+                <option value="roxo">Roxo</option>
+                <option value="azul">Azul</option>
+                <option value="verde">Verde</option>
+                <option value="vermelho">Vermelho</option>
+              </select>
+            </div>
+            <div class="country-switcher" style="margin-top:.6rem;">
+              <label for="countrySelect" class="sr-only">País</label>
+              <select id="countrySelect" aria-label="Selecionar país">
+                <option value="br">Brasil</option>
+                <option value="us">United States</option>
+                <option value="eu">Europe</option>
+              </select>
+            </div>
+          </div>
+          <div class="menu-foot">
+            <small class="last-update" id="ratesLastUpdate" aria-hidden="true"></small>
+          </div>
+        </div>
+      </div>
+      <div class="cart-area">
+      <button id="cartToggle" class="cart-toggle" aria-label="Abrir carrinho" title="Abrir carrinho">
+        <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h3l2.6 12.4a2 2 0 0 0 2 1.6h9.9a2 2 0 0 0 2-1.6L23 6H6"></path>
+        </svg>
+        <svg class="cart-icon-close" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        <span id="cartCount" class="cart-badge" aria-live="polite">0</span>
+      </button>
+      <div id="cartPanel" class="cart-panel" aria-hidden="true">
+        <h3>Carrinho</h3>
+        <ul id="cartItems"></ul>
+        <div class="cart-summary">
+          <span>Total: <span id="cartTotal">0,00</span></span>
+          <button id="checkoutBtn" class="btn-primary">Finalizar</button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="filters">
+      <h2>Ofertas</h2>
+      <p>Confira os produtos em promoção abaixo. Esta página puxa do mesmo arquivo de produtos e aplica um filtro por desconto.</p>
+    </section>
+
+    <section id="offersGrid" class="products-grid" aria-live="polite"></section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 Existore - Hardware & Periféricos</p>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+  <script>
+    // Small client-side filter to copy products marked with desconto > 0 into the offers grid
+    (function(){
+      async function loadOffers(){
+        try{
+          const res = await fetch('assets/data/products.json');
+          const data = await res.json();
+          const offers = data.filter(p => p.desconto && Number(p.desconto) > 0);
+          const container = document.getElementById('offersGrid');
+          if(!container) return;
+          container.innerHTML = '';
+          offers.forEach(p => {
+            const el = document.createElement('article');
+            el.className = 'product-card' + (p.desconto ? ' has-discount' : '');
+            el.innerHTML = `
+              <a href="product.html?id=${p.id}">
+                <div class="product-media"><img src="${p.imagem || 'assets/img/placeholder.png'}" alt="${p.nome}"></div>
+                <div class="product-meta">
+                  <h3>${p.nome}</h3>
+                  <div class="price ${p.desconto ? 'has-discount' : ''}">
+                    ${p.desconto ? `<div class="old-price">R$ ${p.preco.toFixed(2)}</div>` : ''}
+                    <div class="final-price"><span class="currency">R$</span><span class="amount">${(p.preco * (1 - (p.desconto || 0))).toFixed(2)}</span></div>
+                    ${p.desconto ? `<span class="discount-badge"><span class="discount-badge-text">-${Math.round(p.desconto * 100)}%</span></span>` : ''}
+                  </div>
+                </div>
+              </a>`;
+            container.appendChild(el);
+          });
+        }catch(e){ console.error('Erro ao carregar ofertas', e); }
+      }
+      loadOffers();
+    })();
+  </script>
+</body>
+</html>

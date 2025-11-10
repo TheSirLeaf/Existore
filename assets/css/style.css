@@ -1,0 +1,982 @@
+/* ================= Temas & Paleta Acessível ================= */
+/* Tema principal roxo (default) */
+:root {
+  --bg: #16051f;
+  --bg-alt: #21092f;
+  --accent: #7b2fff;
+  --accent-alt: #a679ff;
+  --text: #f7f3ff;
+  --text-dim: #c9b8e6;
+  --danger: #ff4d6d;
+  /* Superfícies (tons progressivos para containers) */
+  --surface-1: #240b33;
+  --surface-2: #2b123d;
+  --surface-3: #301542;
+  --surface-4: #3b1d58;
+  --border: #3d2357;
+  --border-strong: #4d3170;
+  --border-accent: var(--accent);
+  --focus-ring: var(--accent);
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,.35);
+  --shadow-md: 0 6px 16px rgba(0,0,0,.5);
+  --gradient: linear-gradient(135deg,#6a00ff,#9d4dff 55%,#b388ff);
+  --transition-fast: .18s ease;
+}
+
+/* if viewport is narrower than max-width, clamp the sidebar to not overflow */
+@media (max-width: 1240px) {
+  .filters { left: 24px; }
+}
+
+/* mobile / small screens: move filters back into document flow above products */
+@media (max-width: 979px) {
+  .filters {
+    position: static !important;
+    width: auto !important;
+    left: auto !important;
+    top: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Paletas adicionais por tema */
+html[data-theme="azul"] {
+  --bg: #0b1424;
+  --bg-alt: #102035;
+  --accent: #2f7bff;
+  --accent-alt: #78a6ff;
+  --text: #eef4ff;
+  --text-dim: #bcd0f5;
+  --surface-1: #0f1d33;
+  --surface-2: #162840;
+  --surface-3: #1d3350;
+  --surface-4: #254268;
+  --border: #335480;
+  --border-strong: #3c6599;
+  --border-accent: var(--accent);
+  --focus-ring: var(--accent);
+  --gradient: linear-gradient(135deg,#1446ff,#4d7dff 55%,#86aaff);
+}
+html[data-theme="verde"] {
+  --bg: #0f1b14;
+  --bg-alt: #14251c;
+  --accent: #00c46a;
+  --accent-alt: #4be39b;
+  --text: #eafff4;
+  --text-dim: #b9e7cf;
+  --surface-1: #182d23;
+  --surface-2: #1d3a2c;
+  --surface-3: #234635;
+  --surface-4: #2b5442;
+  --border: #356653;
+  --border-strong: #45876f;
+  --border-accent: var(--accent);
+  --focus-ring: var(--accent);
+  --gradient: linear-gradient(135deg,#00a658,#28d17f 55%,#73f0b4);
+}
+html[data-theme="vermelho"] {
+  --bg: #20090b;
+  --bg-alt: #2a0f11;
+  --accent: #ff3b4f;
+  --accent-alt: #ff7a86;
+  --text: #fff1f2;
+  --text-dim: #f0c2c7;
+  --surface-1: #2f1012;
+  --surface-2: #44181d;
+  --surface-3: #531f24;
+  --surface-4: #63252b;
+  --border: #7d353c;
+  --border-strong: #96464c;
+  --border-accent: var(--accent);
+  --focus-ring: var(--accent);
+  --gradient: linear-gradient(135deg,#ff1f3a,#ff5a6a 55%,#ff98a3);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin:0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent-alt); text-decoration: none; }
+a:hover { color: var(--text); }
+
+.site-header {
+  display:flex; align-items:center; justify-content:space-between; padding:0.75rem 1.5rem;
+  /* darker header: heavier black overlay over the theme gradient */
+  background-image: linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.6)), var(--gradient);
+  background-blend-mode: overlay;
+  position: sticky; top:0; z-index: 80; box-shadow: var(--shadow-md); backdrop-filter: saturate(140%) blur(6px);
+  border-bottom: 1px solid rgba(0,0,0,0.45);
+}
+.logo { display:flex; align-items:center; gap:.45rem; font-family: 'Great Vibes', cursive; font-size:2.2rem; color:var(--text); letter-spacing:0.6px; line-height:1;
+  /* simplified rectangular bar that spans the header height visually and has a slanted right side */
+  --logo-slant: 18px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.18)), var(--surface-3);
+  border-radius: 0; border: none; box-shadow: none;
+  /* stretch to the header height and nudge left to touch the header edge; add vertical padding for larger visual height */
+  align-self: stretch; margin: 0 0; margin-left: calc(-1 * 1.5rem); padding: .36rem 1.6rem; display:flex; align-items:center; position:relative;
+  /* right side slanted like a simple slash */
+  clip-path: polygon(0 0, calc(100% - var(--logo-slant)) 0, 100% 50%, calc(100% - var(--logo-slant)) 100%, 0 100%);
+  -webkit-clip-path: polygon(0 0, calc(100% - var(--logo-slant)) 0, 100% 50%, calc(100% - var(--logo-slant)) 100%, 0 100%);
+}
+.logo .logo-mark { font-size:1.3rem; display:inline-block; transform:translateY(3px); }
+.logo .logo-word { display:inline-block; font-weight:600; color:var(--text); text-shadow: 0 4px 14px rgba(0,0,0,0.36); margin-left:8px; transform: translateY(4px); }
+
+@media (max-width: 520px) {
+  .logo { padding: .28rem .9rem; margin-left: calc(-1 * 1.5rem); --logo-slant: 12px; }
+  .logo .logo-word { font-size: 1.6rem; }
+  .logo .logo-mark { transform: translateY(0); }
+}
+
+/* Header tabs: segmented lozenge / pill tiles with underline indicator
+   - Each `.main-nav a` is styled as a pill tile (separated visually)
+   - `::before` is used for the small hover dash; `::after` remains the active underline
+   - Keep reduced-motion rules and responsive behavior
+*/
+.main-nav { display:flex; gap:0; align-items:stretch; position:relative; /* slant distance in px for consistent angle */ --tab-slant: 12px; /* active tab scale */ --tab-active-scale: 1.06; --tab-active-raise: 6px;
+  /* tab backgrounds derived from theme variables so colors follow html[data-theme] */
+  --tab-bg: linear-gradient(90deg, var(--accent) 0%, var(--accent-alt) 100%);
+  --tab-active-bg: linear-gradient(90deg, var(--accent) 0%, var(--accent-alt) 40%, var(--accent-alt) 70%);
+}
+
+/* Parallelogram tabs using clip-path with a configurable --tab-slant so
+   adding/removing nav items keeps layout stable. The underline is centered
+   and scales from the center for predictable placement beneath icons.
+*/
+.main-nav a {
+  display:inline-flex; align-items:center; justify-content:center;
+  /* slightly wider horizontally to improve touch/visual comfort */
+  padding: .52rem 1.25rem;
+  color: #eef6ff;
+  background-image: var(--tab-bg);
+  position:relative; z-index:1;
+  /* stronger, more visible typography for tabs */
+  font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* use a pixel-based tab slant so angle remains consistent regardless of tab width */
+  clip-path: polygon(var(--tab-slant) 0, 100% 0, calc(100% - var(--tab-slant)) 100%, 0% 100%);
+  -webkit-clip-path: polygon(var(--tab-slant) 0, 100% 0, calc(100% - var(--tab-slant)) 100%, 0% 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease, background .18s ease;
+  margin: -6px 0; /* reach header top/bottom */
+}
+.main-nav a:first-child { clip-path: polygon(0 0, 100% 0, calc(100% - var(--tab-slant)) 100%, 0% 100%); -webkit-clip-path: polygon(0 0, 100% 0, calc(100% - var(--tab-slant)) 100%, 0% 100%); }
+.main-nav a:last-child { clip-path: polygon(var(--tab-slant) 0, 100% 0, 100% 100%, 0 100%); -webkit-clip-path: polygon(var(--tab-slant) 0, 100% 0, 100% 100%, 0 100%); }
+
+/* No gap between tabs; clip-path ensures edges meet exactly */
+.main-nav a + a { margin-left: 0; }
+
+.main-nav a:hover, .main-nav a:focus { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.36); }
+
+/* Active tab: slightly larger and lifted, with a smooth flowing background animation */
+.main-nav a.active,
+.main-nav a.active:hover,
+.main-nav a.active:focus {
+  /* use a valid translateY value; negative the var to raise the tab */
+  transform: translateY(calc(-1 * var(--tab-active-raise))) scale(var(--tab-active-scale));
+  box-shadow: 0 18px 48px rgba(0,0,0,0.52);
+  z-index: 3; /* bring above neighbors */
+}
+
+/* animated flowing gradient used only on the active tab */
+@keyframes tabFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.main-nav a.active {
+  /* active uses a theme-aware gradient and animated flow */
+  background-image: var(--tab-active-bg);
+  background-size: 220% 100%;
+  background-repeat: no-repeat;
+  animation: tabFlow 6s linear infinite;
+  transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease, background .9s linear;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .main-nav a.active { animation: none !important; }
+}
+
+/* small hover dash placed just inside the bottom so it's visible with clip-path */
+.main-nav a::before {
+  /* hover dash removed — keep pseudo-element disabled for clarity */
+  content: none; display: none; width:0; height:0; opacity:0; pointer-events:none;
+}
+
+/* active underline: centered under the icon/text and placed outside the parallelogram
+   so it doesn't overlap the tab's clickable area. Uses clamp so it adapts to different
+   nav item counts and widths.
+*/
+.main-nav a::after {
+  /* trapezoid selection bar: bigger, more visible */
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px; /* sit slightly below the tabs */
+  transform: translateX(-50%) scaleX(0);
+  width: clamp(48px, 46%, 160px);
+  height: 12px;
+  /* trapezoid shape via clip-path */
+  clip-path: polygon(15% 0, 85% 0, 100% 100%, 0% 100%);
+  -webkit-clip-path: polygon(15% 0, 85% 0, 100% 100%, 0% 100%);
+  background: linear-gradient(90deg, #ffd580 0%, #ffdfb3 60%);
+  box-shadow: 0 6px 18px rgba(255,213,128,0.18), 0 2px 6px rgba(0,0,0,0.28) inset;
+  transform-origin: center center;
+  transition: transform .36s cubic-bezier(.2,.9,.2,1), box-shadow .22s ease, opacity .18s ease;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.98;
+}
+.main-nav a.active::after { transform: translateX(-50%) scaleX(0); }
+.main-nav.anim-start a.active::after { transform: translateX(-50%) scaleX(1); box-shadow: 0 14px 40px rgba(255,205,100,0.18); }
+
+@media (prefers-reduced-motion: reduce) {
+  .main-nav a, .main-nav a::before, .main-nav a::after { transition: none !important; }
+}
+
+@media (max-width:680px) {
+  /* slightly smaller slant on small screens for better fit */
+  .main-nav { --tab-slant: 8px; }
+  /* increase mobile horizontal padding a bit for easier tapping */
+  .main-nav a { padding:.36rem .72rem; margin:-4px 0; }
+  .main-nav a::after { bottom:6px; height:6px; width:64%; }
+}
+
+.header-actions { display:flex; align-items:center; gap:.8rem; }
+/* ensure header actions can host positioned children if needed */
+.header-actions { position:relative; }
+.theme-switcher select { background: var(--surface-3); color: var(--text); border:1px solid var(--border-strong); border-radius: var(--radius-sm); padding:.45rem .6rem; box-shadow: var(--shadow-sm); }
+.theme-switcher select:focus { outline:2px solid var(--focus-ring); }
+
+/* Theme selector animation */
+.theme-switcher select { transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+.theme-switcher select.theme-anim { animation: themePop .36s cubic-bezier(.2,.9,.2,1); }
+@keyframes themePop { 0% { transform: translateY(0) scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); } 40% { transform: translateY(-6px) scale(1.06); box-shadow: 0 8px 20px rgba(0,0,0,.18); } 100% { transform: translateY(0) scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); } }
+.cart-area { position:relative; display:inline-flex; align-items:center; vertical-align:middle; }
+#cartToggle.cart-toggle { background: var(--surface-3); color: var(--text); border:1px solid var(--border-strong); /* keep a fixed box to avoid layout shift when swapping icons */ padding:0; width:44px; height:40px; border-radius: calc(var(--radius-sm) + 2px); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:0; box-shadow: 0 0 0 2px rgba(255,255,255,.07) inset; position:relative; }
+#cartToggle.cart-toggle:hover { background: var(--surface-4); border-color: var(--border-accent); }
+/* Icons are overlaid and animated via opacity/transform to avoid layout shift */
+.cart-toggle { position: relative; }
+.cart-icon, .cart-icon-close { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(1); width:20px; height:20px; transition: opacity .22s ease, transform .28s cubic-bezier(.2,.9,.2,1); opacity:1; pointer-events:none; }
+.cart-icon-close { opacity:0; }
+/* ensure same visual box and prevent layout jumps */
+.cart-toggle svg { display:block; width:20px; height:20px; }
+.cart-toggle.open .cart-icon { opacity:0; transform: translate(-50%, -50%) scale(.85) rotate(-8deg); }
+.cart-toggle.open .cart-icon-close { opacity:1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+.cart-badge, #cartCount.cart-badge { position:absolute; top:-6px; right:-6px; background: var(--accent); color: var(--text); border:2px solid var(--surface-3); min-width:20px; height:20px; border-radius:999px; font-weight:800; font-size:.75rem; display:flex; align-items:center; justify-content:center; padding:0 .25rem; line-height:1; cursor:pointer; }
+
+.cart-panel { position:absolute; right:0; top:110%; width:320px; background: var(--surface-2); border:1px solid var(--border); padding:1rem; border-radius: var(--radius-md); box-shadow: var(--shadow-md); opacity:0; visibility:hidden; transform: translateY(-6px) scale(.98); transition: opacity .22s ease, transform .22s ease, visibility 0s linear .22s; pointer-events:none; }
+.cart-panel.open { opacity:1; visibility:visible; transform: translateY(0) scale(1); transition: opacity .22s ease, transform .22s ease; pointer-events:auto; }
+.cart-panel h3 { margin-top:0; }
+#cartItems { list-style:none; margin:0 0 .75rem; padding:.2rem .25rem .2rem .2rem; max-height: calc(4 * 80px); overflow-y:auto; scrollbar-gutter: stable both-edges; }
+#cartItems li { display:grid; grid-template-columns: 48px 1fr; gap:.6rem; align-items:center; padding:.55rem .55rem; background: var(--surface-3); border:1px solid var(--border); border-radius: var(--radius-sm); margin: .45rem; font-size:.8rem; position:relative; min-width:0; }
+#cartItems li.cart-empty { /* override generic list-item styles to keep empty state compact */
+  display: block;
+  grid-template-columns: none;
+  padding: 0;
+  margin: .35rem .45rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+#cartItems li.cart-empty .empty-wrap {
+  padding: .85rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px dashed var(--border);
+  box-shadow: none;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  display:flex; flex-direction:column; align-items:center; gap:.5rem;
+}
+#cartItems li.cart-empty .empty-icon { width:40px; height:40px; font-size:18px; }
+#cartItems li.cart-empty .empty-title { font-size:.98rem; }
+#cartItems li.cart-empty .empty-sub { max-width:100%; }
+#cartItems li:hover { border-color: var(--border-accent); }
+.cart-thumb { width:48px; height:48px; object-fit:cover; border-radius: var(--radius-sm); background: var(--surface-4); border:1px solid var(--border); flex-shrink:0; }
+.cart-thumb.fallback {
+  /* Keep rounded corners, remove the solid border and show a soft gradient background
+     so placeholder icons sit nicely over a pleasant surface. */
+  opacity: .95;
+  filter: grayscale(.05) contrast(1);
+  border: none; /* remove the chrome border for placeholders */
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.04)), var(--gradient);
+  background-blend-mode: overlay; /* soft overlay over the theme gradient */
+  background-size: cover;
+  border-radius: var(--radius-sm); /* ensure corners remain rounded */
+}
+.cart-info { display:flex; flex-direction:column; gap:.35rem; min-width:0; overflow:hidden; }
+.cart-name { font-weight:600; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; max-width:100%; }
+.cart-controls { display:flex; align-items:center; gap:.4rem; flex-wrap:nowrap; }
+.qtd-btn { background: var(--surface-4); color: var(--text); border:1px solid var(--border-strong); width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius: var(--radius-sm); cursor:pointer; font-size:.85rem; }
+.qtd-btn:hover { background: var(--accent); border-color: var(--accent); }
+.cart-price { font-weight:700; font-size:.85rem; letter-spacing:.35px; color: var(--accent-alt); font-family:'Segoe UI',system-ui,sans-serif; }
+#cartItems::-webkit-scrollbar { width:9px; }
+#cartItems::-webkit-scrollbar-track { background: var(--surface-2); }
+#cartItems::-webkit-scrollbar-thumb { background: var(--surface-4); border-radius:9px; }
+#cartItems::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+.cart-summary { display:flex; flex-direction:column; gap:.5rem; }
+.cart-summary span { font-weight:600; }
+
+.content { padding:1.5rem; max-width:1600px; margin:0 auto; }
+.content.narrow { max-width:900px; }
+.filters { background: var(--surface-1); padding:1rem 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border:1px solid var(--border); }
+.filters h2 { margin-top:0; }
+.filter-row { display:flex; flex-wrap:wrap; gap:.75rem; align-items:flex-end; }
+.filter-row input[type=text], .filter-row input[type=number], .filter-row select { background: var(--surface-3); border:1px solid var(--border-strong); color: var(--text); padding:.55rem .7rem; border-radius: var(--radius-sm); min-width:160px; }
+.filter-row input:focus, .filter-row select:focus { outline:2px solid var(--focus-ring); }
+.price-filter { display:flex; flex-direction:column; gap:.35rem; align-items:stretch; }
+
+.btn-primary, .btn-secondary { cursor:pointer; font-weight:700; border:none; padding:.65rem 1rem; border-radius: var(--radius-sm); transition:.22s; font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial; letter-spacing:.6px; text-transform:uppercase; }
+.btn-primary { background: var(--accent); color: var(--text); box-shadow: 0 0 0 2px rgba(255,255,255,.06) inset; font-weight:800; }
+.btn-primary:hover { background: var(--accent-alt); }
+.btn-secondary { background: var(--surface-3); color: var(--accent-alt); border:1px solid var(--border-strong); }
+.btn-secondary:hover { background: var(--surface-4); border-color: var(--border-accent); }
+/* Add button flow animation when hovering the product card */
+.add-btn { position: relative; overflow: hidden; z-index: 0; }
+.add-btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.38) 50%, rgba(255,255,255,0.0) 100%);
+  transform: skewX(-18deg) translateX(-120%);
+  transition: transform .9s cubic-bezier(.2,.9,.2,1);
+  pointer-events: none;
+}
+.product-card:hover .add-btn::after { transform: skewX(-18deg) translateX(220%); }
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .add-btn::after { transition: none; transform: none; opacity: 0; }
+}
+/* Efeito clique no botão adicionar */
+.btn-primary.btn-press { animation: btnPop .22s ease; }
+@keyframes btnPop { 0% { transform: scale(1); } 50% { transform: scale(1.06); } 100% { transform: scale(1); } }
+
+.products-grid { margin-top:1.25rem; display:grid; gap:1.1rem; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); grid-auto-rows: 1fr; }
+.product-card { background: var(--surface-2); padding: .9rem .9rem 1.1rem; border:1px solid var(--border); border-radius: var(--radius-md); display:flex; flex-direction:column; gap:.5rem; position:relative; box-shadow: var(--shadow-sm); transition: var(--transition-fast); /* ensure children are clipped to the rounded card and stacking context is predictable */ overflow: hidden; z-index: 0; height:100%; }
+.product-card { will-change: transform, box-shadow; justify-content: space-between; }
+.product-card:hover { border-color: var(--border-accent); transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.products-count { color: var(--text-dim); opacity: .86; font-weight:700; font-size:.98rem; }
+.product-card img { width:100%; height:140px; object-fit:cover; border-radius: var(--radius-sm); background: var(--surface-3); border:1px solid var(--border); }
+
+/* Product media container (image or placeholder) */
+.product-media { position:relative; width:100%; height:140px; border-radius: var(--radius-sm); overflow:hidden; background: var(--surface-3); border:1px solid var(--border); display:block; }
+.product-media img { width:100%; height:100%; object-fit:cover; display:block; }
+
+/* Placeholder look: gradient background, PC icon top-left and category centered */
+.product-media.placeholder {
+  color: var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background-image: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.12)), var(--gradient);
+  background-blend-mode: multiply;
+  position:relative; /* ensure absolute children are positioned correctly */
+  text-align:center; /* help multi-line badge center its text */
+}
+.product-media .pc-icon {
+  position:absolute; top:8px; left:8px; width:28px; height:28px; border-radius:6px; background: rgba(255,255,255,.06); padding:4px; box-shadow: var(--shadow-sm);
+}
+.product-media .category-badge {
+  position:relative; z-index:2; display:inline-block; background: rgba(0,0,0,0.18); color:var(--text); padding:.28rem .7rem; border-radius:999px; font-weight:700; text-transform:uppercase; letter-spacing:.35px; backdrop-filter: blur(6px);
+  max-width:95%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.05;
+}
+
+/* If the card is very narrow, slightly reduce badge font so it fits on one line */
+@media (max-width: 360px) {
+  .product-media .category-badge { font-size: .82rem; padding:.22rem .5rem; }
+}
+
+/* ensure product meta doesn't conflict with centered badge */
+.product-card .product-meta { position:relative; z-index:1; }
+
+/* Price styling: default row layout; when product has discount we switch to column
+  so the old price is above and the final price below. Increase final price size
+  specifically in product cards for emphasis. */
+.price { display:flex; flex-direction:row; align-items:baseline; gap:.25rem; /* reserve vertical space so cards keep same height */
+  min-height: 3.4rem; }
+.price.has-discount { flex-direction:column; align-items:flex-start; gap:.18rem; min-height: 3.4rem; }
+.price .currency { font-size:.78rem; color:var(--text-dim); font-weight:600; }
+.product-card .price .amount { font-size:1.28rem; font-weight:900; color:var(--accent-alt); }
+.price .amount { font-weight:800; }
+
+/* Keep currency symbol beside the amount by grouping them in .final-price */
+.final-price { display:inline-flex; gap:.28rem; align-items:center; }
+.final-price .currency { margin-right:0; }
+
+/* Visual spacing: non-discounted prices sit closer to the Add button; when
+  a product has discount (two-line price), keep a slightly larger gap */
+.product-card .price { margin-bottom: 0.18rem; }
+.product-card .price.has-discount { margin-bottom: 0.6rem; }
+
+/* Gradient money treatment for better emphasis */
+.price .amount.gradient, .cart-price.gradient, #cartTotal.gradient, .profile-cart-total.gradient {
+  /* brighter, more vibrant money gradient: accent-alt -> near-white for emphasis */
+  background: linear-gradient(90deg, var(--accent-alt) 0%, rgba(255,255,255,0.92) 60%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight:900;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.45);
+}
+
+/* Fallback (non supporting browsers): slightly stronger accent color */
+.price .amount.fallback, .cart-price.fallback, #cartTotal.fallback, .profile-cart-total.fallback {
+  /* fallback: slightly brighter accent-alt to approximate gradient */
+  color: color-mix(in srgb, var(--accent-alt) 70%, #ffffff 30%);
+}
+
+/* Menu (hamburger) */
+.menu-wrapper { position:relative; display:inline-flex; align-items:center; vertical-align:middle; }
+.menu-toggle { background: var(--surface-3); color: var(--text); border:1px solid var(--border-strong); width:44px; height:40px; border-radius: calc(var(--radius-sm)); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; padding:0; box-shadow: 0 0 0 2px rgba(255,255,255,.04) inset; }
+.menu-toggle .hamburger { display:inline-block; width:20px; height:14px; position:relative; }
+.menu-toggle .hamburger span { display:block; height:2px; background:var(--text); border-radius:2px; position:absolute; left:0; right:0; transition: background .16s ease; }
+.menu-toggle .hamburger span:nth-child(1) { top:0; }
+.menu-toggle .hamburger span:nth-child(2) { top:6px; }
+.menu-toggle .hamburger span:nth-child(3) { bottom:0; }
+.menu-toggle:hover .hamburger span { background: var(--accent-alt); }
+
+.menu-panel { position:absolute; /* anchor to wrapper, prefer aligning to right so it won't overflow off-screen */ left:auto; right:0; top:110%; width:260px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04)), var(--surface-2); border:1px solid var(--border); padding:.6rem; border-radius: calc(var(--radius-md)); box-shadow: 0 10px 30px rgba(0,0,0,.45); transform: translateY(-6px) scale(.98); transform-origin: top right; opacity:0; visibility:hidden; transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s; z-index:60; min-width:220px; max-width: calc(100vw - 32px); }
+.menu-panel.open { opacity:1; visibility:visible; transform: translateY(0) scale(1); }
+.menu-panel::before { content:""; position:absolute; top:-8px; right:16px; left:auto; width:12px; height:12px; background: var(--surface-2); transform: rotate(45deg); border-left:1px solid var(--border); border-top:1px solid var(--border); border-radius:2px; }
+.menu-panel .menu-head { display:flex; flex-direction:column; gap:2px; padding:.1rem .15rem .45rem; border-bottom:1px solid rgba(255,255,255,.03); margin-bottom:.45rem; }
+.menu-panel .menu-head strong { font-weight:700; font-size:.95rem; }
+.menu-panel .menu-head .menu-sub { font-size:.72rem; color:var(--text-dim); }
+.menu-panel .menu-body { display:flex; flex-direction:column; gap:.5rem; }
+.menu-panel .menu-foot { margin-top:.5rem; padding-top:.4rem; border-top:1px dashed rgba(255,255,255,.03); }
+.menu-panel .last-update { display:block; font-size:.72rem; color:var(--text-dim); }
+.menu-panel .theme-switcher select, .menu-panel .country-switcher select {
+  width:100%;
+  /* soft gradient tuned to current theme via --gradient */
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.03)), var(--gradient);
+  color: var(--text);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius: calc(var(--radius-sm));
+  padding:.55rem .9rem .55rem .7rem; /* extra right padding for arrow */
+  box-shadow: var(--shadow-sm);
+  position:relative;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px 18px;
+  transition: box-shadow .18s ease, transform .12s ease, border-color .14s ease;
+  cursor: pointer;
+}
+.menu-panel .theme-switcher select:hover, .menu-panel .country-switcher select:hover {
+  box-shadow: 0 8px 18px rgba(0,0,0,0.22);
+  transform: translateY(-2px);
+}
+.menu-panel .theme-switcher select:focus, .menu-panel .country-switcher select:focus {
+  outline: none; /* use custom ring */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.28), 0 0 0 3px rgba(255,255,255,0.04), 0 0 0 5px var(--focus-ring);
+  border-color: color-mix(in srgb, var(--focus-ring) 70%, var(--border-strong) 30%);
+}
+
+/* custom arrow using inline SVG - ensures contrast over gradient */
+.menu-panel .theme-switcher select, .menu-panel .country-switcher select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path fill='white' fill-opacity='0.95' d='M7 10l5 5 5-5z'/></svg>");
+}
+
+/* Attempt styling for native options. Note: many browsers limit option styling; this helps where supported. */
+.menu-panel select option { background: var(--surface-2); color: var(--text); padding: .25rem .6rem; }
+.menu-panel select option:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.menu-panel select option:checked { background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); color: var(--text); font-weight:700; }
+
+/* For small screens, ensure arrow doesn't overlap caret area */
+@media (max-width: 420px) {
+  .menu-panel .theme-switcher select, .menu-panel .country-switcher select { padding-right: 44px; }
+}
+
+/* ===== Custom select replacement (for consistent dropdown styling) ===== */
+.menu-panel .custom-select { position: relative; width: 100%; font-family: inherit; }
+.menu-panel .custom-select .custom-select-current {
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:.6rem; padding:.5rem .8rem; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)), var(--gradient); color:var(--text); border-radius: calc(var(--radius-sm)); border:1px solid rgba(255,255,255,0.06); box-shadow: var(--shadow-sm); cursor:pointer; text-align:left;
+}
+.menu-panel .custom-select .custom-select-current:after {
+  content: ''; width:12px; height:12px; display:inline-block; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='white' d='M7 10l5 5 5-5z'/></svg>"); background-size:12px 12px; opacity:0.95; transform-origin:center; transition: transform .18s ease;
+}
+.menu-panel .custom-select.open .custom-select-current:after { transform: rotate(180deg); }
+.menu-panel .custom-select-list { position:absolute; left:0; right:0; top: calc(100% + 8px); background: var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:6px 6px; box-shadow: 0 10px 30px rgba(0,0,0,.45); max-height:220px; overflow:auto; z-index:140; list-style:none; margin:0;
+  /* hidden by default - shown when parent .custom-select has .open */
+  display:block; opacity:0; pointer-events:none; transform: translateY(-6px) scale(.99); transition: opacity .22s ease, transform .22s ease; will-change: transform, opacity;
+}
+.menu-panel .custom-select.open .custom-select-list { opacity:1; pointer-events:auto; transform: translateY(0) scale(1); }
+.menu-panel .custom-select-list li { padding:.5rem .65rem; border-radius:6px; color:var(--text); cursor:pointer; }
+.menu-panel .custom-select-list li[aria-selected='true'] { font-weight:800; /* selected option: apply strong gradient background */
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)), var(--gradient);
+  color: var(--text); box-shadow: 0 6px 20px rgba(0,0,0,0.36); transform: translateY(-1px);
+}
+.menu-panel .custom-select-list li:hover { background: rgba(255,255,255,0.04); color:var(--text); }
+
+/* stylized selected value shown in the trigger */
+.menu-panel .custom-select-current .custom-select-value { font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif; font-weight:700; font-size: 1rem; letter-spacing: .2px; color: var(--text); display:inline-block; }
+
+/* small tweak for old price (strikethrough) used in product cards and cart */
+.price .old-price, .cart-price-old { font-size: .82rem; color: rgba(255,255,255,0.68); text-decoration: line-through; display:block; margin-bottom: 4px; }
+.price .old-price.small { font-size: .78rem; opacity: .75; }
+.menu-panel .custom-select-list li:focus { outline:2px solid var(--focus-ring); }
+
+/* hide original select only when JS converts it (we add class .select-replaced to menu-panel) */
+.menu-panel.select-replaced select { position: absolute !important; left: -9999px !important; width:1px !important; height:1px !important; overflow:hidden !important; opacity:0 !important; pointer-events:none !important; }
+
+/* make sure scrollbar inside list matches theme */
+.menu-panel .custom-select-list::-webkit-scrollbar { width:9px; }
+.menu-panel .custom-select-list::-webkit-scrollbar-thumb { background: var(--surface-4); border-radius:9px; }
+
+/* Keep the menu inside the viewport on small screens */
+@media (max-width: 520px) {
+  .menu-panel { left:8px; right:8px; width:auto; min-width: unset; border-radius: calc(var(--radius-md)); }
+  .menu-panel::before { left:24px; right:auto; }
+}
+.product-card h3 { margin: 0.04rem 0 0.06rem; font-size:1rem; }
+.product-card h3 a { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; position:relative; }
+
+/* Custom styled tooltip that shows the full product name on hover/focus.
+   Uses the `data-fullname` attribute set on the product link. We avoid
+   using the native `title` attribute so the browser tooltip does not
+   interfere with this styled popup. Tooltip is hidden on small screens. */
+.product-card h3 a[data-fullname] { position: relative; }
+.product-card h3 a[data-fullname]::after {
+  content: attr(data-fullname);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  bottom: 100%;
+  margin-bottom: 8px;
+  min-width: 140px;
+  max-width: 36rem;
+  white-space: normal;
+  background: rgba(20,20,24,0.96);
+  color: #ffffff;
+  padding: .45rem .6rem;
+  border-radius: .45rem;
+  font-size: .9rem;
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none; /* tooltip shouldn't intercept pointer events */
+  transition: opacity .12s ease, transform .12s ease;
+  transform-origin: 50% 100%;
+}
+.product-card h3 a[data-fullname]:hover::after,
+.product-card h3 a[data-fullname]:focus::after,
+.product-card h3 a[data-fullname]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.product-card h3 a[data-fullname]::before {
+  /* small arrow */
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 6px);
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(20,20,24,0.96);
+  z-index: 59;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+.product-card h3 a[data-fullname]:hover::before,
+.product-card h3 a[data-fullname]:focus::before,
+.product-card h3 a[data-fullname]:focus-visible::before {
+  opacity: 1;
+}
+
+/* Hide the custom tooltip on very small screens to avoid covering content */
+@media (max-width: 640px) {
+  .product-card h3 a[data-fullname]::after,
+  .product-card h3 a[data-fullname]::before { display: none; }
+}
+
+/* The pseudo-element tooltip above is disabled because card containers use
+   overflow:hidden which clips it. We use a JS-controlled floating tooltip
+   appended to <body> instead. The following styles are for that floating
+   tooltip. */
+.product-card h3 a[data-fullname]::after,
+.product-card h3 a[data-fullname]::before { display: none !important; }
+
+.floating-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: rgba(20,20,24,0.96);
+  color: #fff;
+  padding: .45rem .6rem;
+  border-radius: .45rem;
+  font-size: .92rem;
+  line-height: 1.2;
+  max-width: 48rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.55);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .12s ease, transform .12s ease;
+  text-align: center;
+  white-space: normal;
+}
+
+/* Small arrow drawn using a pseudo-element on the floating tooltip node */
+.floating-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -6px;
+  border: 6px solid transparent;
+  border-top-color: rgba(20,20,24,0.96);
+}
+.product-meta { font-size:.68rem; text-transform:uppercase; letter-spacing:.5px; color: var(--text-dim); margin-bottom: 0.04rem; }
+.product-card.has-discount h3 {
+  /* subtle golden highlight for discounted product titles */
+  background: linear-gradient(90deg, #f6e27a 0%, #ffd580 45%, #ffdfb3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 4px 18px rgba(255,210,120,0.06);
+}
+
+/* optional soft underline/glow to make the highlight more visible */
+.product-card.has-discount h3::after {
+  content: '';
+  display: block;
+  height: 6px;
+  width: 42%;
+  margin-top: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(246,226,122,0.14), rgba(255,213,128,0.12));
+}
+
+/* Gray underline for non-discounted product titles - subtle and consistent with theme */
+.product-card:not(.has-discount) h3::after {
+  content: '';
+  display: block;
+  height: 6px;
+  width: 42%;
+  margin-top: 6px;
+  border-radius: 6px;
+  /* keep it visible but smaller: slightly stronger/focused gradient */
+  background: linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0.14));
+  opacity: 1;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.38); /* lighter shadow than before */
+}
+
+/* Hover interactions: underline transition */
+.product-card h3::after,
+.product-card.has-discount h3::after,
+.product-card:not(.has-discount) h3::after { transition: width .28s cubic-bezier(.2,.9,.2,1), opacity .18s ease; }
+
+/* Glow behind card using pseudo-element (kept behind content via z-index -1) */
+.product-card::before {
+  content: '';
+  position: absolute;
+  left: -8px; right: -8px; top: -8px; bottom: -8px;
+  border-radius: calc(var(--radius-md) + 8px);
+  background: var(--accent);
+  filter: blur(28px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1; /* keep behind the card content */
+  transition: opacity .28s ease, transform .28s ease;
+}
+
+/* hover state: glow, stronger pop and price highlight */
+.product-card:hover::before { opacity: .14; transform: scale(1.02); }
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 18px 50px rgba(0,0,0,0.58), 0 10px 30px rgba(0,0,0,0.28); }
+
+/* Price highlight: brighten and lift the final amount */
+.product-card .final-price .amount.gradient { transition: transform .2s ease, filter .2s ease; }
+.product-card:hover .final-price .amount.gradient { transform: translateY(-2px) scale(1.035); filter: brightness(1.18) drop-shadow(0 8px 18px rgba(0,0,0,0.48)); }
+
+/* small discount parallelogram badge next to final price */
+.discount-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  margin-left: .48rem; /* slightly tighter to sit closer to the amount */
+  padding: .18rem .5rem; min-height: 26px; /* ensure badge height aligns with price */
+  font-size:.78rem; 
+  /* let the inner text control its color so we can use a theme-aware tint */
+  color: transparent;
+  background: linear-gradient(90deg, #ffd580 0%, #f6d17a 50%, #ffdfb3 100%);
+  border-radius: 0; /* no rounded corners per request */
+  transform: skewX(-18deg); /* make parallelogram */
+  box-shadow: 0 6px 18px rgba(255,200,80,0.12), 0 2px 6px rgba(0,0,0,0.08) inset;
+  line-height: 1; /* control vertical alignment */
+}
+.discount-badge::before { content: ''; display:inline-block; width:0; height:0; }
+/* inverse skew on text so it reads straight */
+.discount-badge .discount-badge-text { display:inline-block; transform: skewX(18deg) translateY(1px);
+  font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, Arial;
+  font-weight: 800; font-size: .82rem; /* reduced by ~1px */
+  font-style: italic;
+  /* use theme color but not fully black: mix accent with black for legibility */
+  color: color-mix(in srgb, var(--accent) 60%, #000 40%);
+}
+
+/* slightly larger on hover of card to match price lift */
+.product-card:hover .discount-badge { transform: translateY(-2px) skewX(-18deg); box-shadow: 0 10px 26px rgba(255,200,80,0.14); }
+
+@media (prefers-reduced-motion: reduce) {
+  .discount-badge, .product-card:hover .discount-badge { transition: none !important; transform: none !important; }
+}
+
+/* Expand underline on hover: discounted cards expand more */
+.product-card:hover h3::after { width: 56%; }
+.product-card.has-discount:hover h3::after { width: 68%; }
+.price { font-weight:700; font-size:1rem; letter-spacing:.4px; position:relative; font-family:'Segoe UI',system-ui,sans-serif; background: linear-gradient(90deg,var(--accent) 0%,var(--accent-alt) 70%); -webkit-background-clip:text; background-clip:text; color:transparent; filter: drop-shadow(0 1px 2px rgba(0,0,0,.35)); }
+.add-btn { margin-top:auto; }
+
+/* Make the Add button a trapezoid glued to the bottom of the product card */
+.product-card { padding-bottom: 52px; /* reserve space equal to button height so it sits flush */ }
+.product-card .btn-primary.add-btn {
+  position: absolute;
+  /* make the button slightly narrower and centered so it doesn't span the full card width */
+  left: 6%;
+  right: 6%;
+  bottom: 0;
+  height: 52px;
+  padding: 0 1.1rem; /* keep text padding but we'll clip shape */
+  border-radius: 0; /* no rounded corners */
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.36);
+  border: none;
+  cursor: pointer;
+  font-weight: 800; letter-spacing: .8px; text-transform: uppercase;
+  /* trapezoid shape via clip-path */
+  clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+  -webkit-clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-alt) 100%);
+  color: var(--text);
+  transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease, filter .18s ease;
+  /* keep the button visually behind content that should overlap it (like rounded corners/overlays) */
+  z-index: 0;
+}
+.product-card .btn-primary.add-btn:focus { outline: 3px solid color-mix(in srgb, var(--accent) 50%, #000 50%); outline-offset: 2px; }
+.product-card .btn-primary.add-btn:hover {
+  /* Remove vertical translation so the button doesn't 'jump' on card hover.
+     Keep a subtle visual emphasis via box-shadow and a tiny scale on hover only if desired. */
+  transform: none; /* no translateY */
+  box-shadow: 0 14px 40px rgba(0,0,0,0.44);
+}
+
+@media (max-width: 680px) {
+  .product-card { padding-bottom: 48px; }
+  /* slightly less horizontal inset on small screens for better tap area */
+  .product-card .btn-primary.add-btn { left: 4%; right: 4%; bottom: 0; height:48px; clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card .btn-primary.add-btn { transition: none !important; }
+}
+
+/* Paginação */
+.product-detail { display: grid; gap: 1rem; margin-top: 1rem; grid-template-columns: 1fr 320px; align-items:start; }
+.product-detail .pd-image { width:100%; }
+/* Match card image proportion: keep 3:2 ratio so height scales with width like product cards */
+.product-detail .pd-image .product-media { aspect-ratio: 3 / 2; width:100%; border-radius: var(--radius-md); overflow:hidden; min-height:140px; height: auto !important; }
+.product-detail .pd-image .product-media img { width:100%; height:100%; object-fit:cover; display:block; }
+.product-detail.has-discount .pd-title { /* gold title treatment for discounted products */
+  background: linear-gradient(90deg, #f6e27a 0%, #ffd580 45%, #ffdfb3 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 4px 18px rgba(255,210,120,0.06);
+}
+.pd-price { display:flex; flex-direction:column; align-items:flex-end; gap:.18rem; text-align:right; }
+.pd-price.has-discount { align-items:flex-end; }
+.pd-price .old-price.small { font-size:.86rem; color: rgba(255,255,255,0.78); text-decoration: line-through; }
+.pd-price .final-price { font-size:1.7rem; font-weight:900; }
+.pd-price .final-price .currency { font-size:0.95rem; margin-right:0.18rem; }
+.pd-price .final-price .amount { font-size:1.7rem; }
+
+.pd-title { margin: .6rem 0 .2rem; font-size:1.3rem; line-height:1.05; position:relative; }
+.pd-title::after { content: ''; display:block; height:6px; width:40%; margin-top:8px; border-radius:6px; background: linear-gradient(90deg, rgba(255,255,255,0.16), rgba(255,255,255,0.08)); transition: width .28s cubic-bezier(.2,.9,.2,1); }
+.product-detail.has-discount .pd-title::after { background: linear-gradient(90deg, rgba(246,226,122,0.18), rgba(255,213,128,0.14)); }
+
+.pd-discount { display:flex; flex-direction:column; align-items:flex-end; gap:.18rem; margin-top:4px; }
+.discount-pct { font-weight:900; color: #ffd580; background: linear-gradient(90deg, rgba(255,213,128,0.06), rgba(255,213,128,0.03)); padding:.18rem .5rem; border-radius:8px; }
+.discount-duration { font-size:.78rem; color: var(--text-dim); }
+
+.product-actions { display:flex; gap:1rem; align-items:flex-start; justify-content:space-between; margin-top: .8rem; }
+.product-body { color: var(--text-dim); line-height:1.5; max-width: 60ch; }
+.product-actions .add-btn { margin-left:auto; height:44px; align-self:center; }
+
+/* Ensure description spans full width below the two columns */
+.pd-desc-row { grid-column: 1 / -1; margin-top: .8rem; }
+
+/* Specifications section */
+.product-specs { margin-top:1.2rem; background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius-md); padding:1rem; box-shadow:var(--shadow-sm); }
+.product-specs h2 { margin:.2rem 0 .7rem; font-size:1rem; letter-spacing:.5px; }
+.specs-list { display:grid; grid-template-columns: minmax(120px, 180px) 1fr; gap:.4rem .9rem; }
+.specs-list dt { font-size:.78rem; text-transform:uppercase; letter-spacing:.6px; color:var(--text-dim); }
+.specs-list dd { margin:0; font-weight:600; }
+
+@media (max-width: 780px) {
+  .product-detail { grid-template-columns:1fr; }
+  .pd-right { order:3; align-items:flex-start; }
+  .pd-price { align-items:flex-start; text-align:left; }
+  .pd-discount { align-items:flex-start; }
+  .specs-list { grid-template-columns: 1fr; }
+}
+
+/* Layout helpers for columns */
+.pd-left { display:flex; flex-direction:column; gap:.45rem; }
+.pd-right { display:flex; flex-direction:column; gap:.6rem; align-items:flex-end; }
+.pd-title-wrap { display:flex; flex-direction:column; gap:.18rem; }
+
+@media (max-width: 880px) {
+  .product-detail { grid-template-columns: 1fr; }
+  .product-detail .pd-info { order:2; }
+  .product-detail .pd-image { order:1; }
+  .product-actions { flex-direction:column; align-items:stretch; }
+  .product-actions .add-btn { margin-left:0; }
+}
+
+.pagination { display:flex; gap:.4rem; justify-content:center; margin:1rem 0 1.5rem; flex-wrap:wrap; }
+.pagination button { background: var(--surface-3); color: var(--text); border:1px solid var(--border-strong); padding:.45rem .7rem; border-radius: var(--radius-sm); cursor:pointer; }
+.pagination button.active { background: var(--accent); border-color: var(--accent); }
+.pagination button:hover { background: var(--surface-4); }
+
+/* Marcas */
+.brands { background: var(--surface-1); padding:1rem 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border:1px solid var(--border); }
+.brands h2 { margin-top:0; }
+.brands-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:.8rem; }
+.brand-card { background: var(--surface-2); border:1px solid var(--border); border-radius: var(--radius-md); padding: .9rem; transition:.25s ease; overflow:hidden; }
+.brand-card .brand-name { font-weight:700; letter-spacing:.6px; }
+.brand-card .brand-detail { color: var(--text-dim); max-height:0; opacity:.5; transition:max-height .25s ease, opacity .25s ease; }
+.brand-card:hover { transform: translateY(-4px) scale(1.02); border-color: var(--border-accent); box-shadow: var(--shadow-md); }
+.brand-card:hover .brand-detail { max-height: 60px; opacity:1; }
+
+/* Card Quem Somos */
+.about-card { background: var(--surface-1); padding:1rem 1.25rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-top:1rem; border:1px solid var(--border); }
+.about-card h2 { margin-top:0; }
+
+.site-footer { padding:1.2rem; text-align:center; font-size:.85rem; color: var(--text-dim); }
+
+.bullets { list-style: square; padding-left:1.2rem; }
+.bullets li { margin-bottom:.4rem; }
+
+.user-box, .cart-box { background: var(--surface-1); padding:1rem 1.25rem; border-radius: var(--radius-md); margin-bottom:1.2rem; box-shadow: var(--shadow-sm); border:1px solid var(--border); }
+.profile-cart-list { list-style:none; padding:0; margin:0 0 .8rem; }
+.profile-cart-list li { display:flex; justify-content:space-between; gap:.5rem; background: var(--surface-3); padding:.5rem .6rem; border-radius: var(--radius-sm); margin-bottom:.45rem; font-size:.85rem; border:1px solid var(--border); }
+.profile-cart-total { font-weight:600; margin-bottom:.6rem; }
+
+/* Empty cart message inside cart panel */
+.cart-empty {
+  list-style: none;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  color: var(--text-dim);
+  background: var(--surface-2);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  margin: 0.2rem 0 0.6rem;
+  font-weight: 600;
+}
+
+/* Enhanced empty-cart layout inside the cart panel */
+.cart-empty .empty-wrap { display:flex; flex-direction:column; align-items:center; gap:.6rem; padding:.6rem; }
+.cart-empty .empty-icon { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow: var(--shadow-sm); }
+.cart-empty .empty-title { font-size:1rem; color: var(--text); margin:0; font-weight:800; }
+.cart-empty .empty-sub { margin:0; font-size:.88rem; color: var(--text-dim); max-width: 20rem; }
+.cart-empty .continue-shopping { margin-top:.4rem; display:inline-block; text-decoration:none; padding:.48rem .9rem; border-radius:8px; background: transparent; border: 1px solid var(--border-strong); color: var(--text); font-weight:700; }
+.cart-empty .continue-shopping:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); border-color: var(--accent); color: var(--text); }
+
+/* Make continue button visually prominent when desired (use .primary) */
+.cart-empty .continue-shopping.primary { background: linear-gradient(90deg, var(--accent), var(--accent-alt)); color: var(--text); border: none; }
+
+@keyframes fadeSlide { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+/* Collapse / "black hole" removal animation */
+@keyframes collapseHole {
+  0% { transform: scale(1); opacity:1; }
+  60% { transform: scale(0.28); opacity:0.6; }
+  100% { transform: scale(0); opacity:0; }
+}
+/* stronger shrink-to-zero effect with smooth easing; keep transform-origin center */
+.collapse-out { animation: collapseHole .48s cubic-bezier(.2,.9,.2,1) forwards; transform-origin: center; will-change: transform, opacity; pointer-events:none; }
+
+/* Acessibilidade */
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* Scrollbar estilizado */
+::-webkit-scrollbar { width:10px; }
+::-webkit-scrollbar-track { background: var(--surface-2); }
+::-webkit-scrollbar-thumb { background: var(--surface-4); border-radius:10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ====== About - melhorias visuais ====== */
+.about-hero { background: var(--gradient); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-md); margin: 1rem 0; color: var(--text); position: relative; overflow: hidden; }
+.about-hero::after { content: ""; position:absolute; inset: -20%; background: radial-gradient(120px 120px at 80% 20%, rgba(255,255,255,.18), transparent 60%); filter: blur(6px); }
+.about-hero h1 { margin: .2rem 0 .6rem; }
+.about-hero p { color: var(--text); opacity:.92; max-width: 70ch; }
+
+.about-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .9rem; margin-top: 1rem; }
+.about-card-compact { background: var(--surface-1); border:1px solid var(--border); border-radius: var(--radius-md); padding: .9rem; box-shadow: var(--shadow-sm); }
+.about-card-compact h3 { margin: 0 0 .4rem; }
+.chip { display:inline-block; background: var(--surface-3); border:1px solid var(--border-strong); color: var(--text-dim); padding:.25rem .5rem; border-radius: 999px; font-size: .75rem; }
+
+.stats { display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .8rem; margin-top: .8rem; }
+.stat { background: var(--surface-2); border:1px solid var(--border); border-radius: var(--radius-md); padding: .8rem; text-align:center; }
+.stat .num { font-weight: 800; font-size: 1.2rem; }
+
+/* Responsivo */
+@media (max-width: 680px) {
+  .filter-row { flex-direction:column; align-items:stretch; }
+  #cartToggle { padding:.5rem .7rem; }
+  .main-nav { gap:.5rem; }
+}
+
+/* Catalog grid layout: robust two-column with sticky filters (no fixed hacks). */
+.catalog { display:grid; grid-template-columns: 280px 1fr; gap:1.4rem; align-items:start; }
+.catalog > .catalog-main { grid-column: 2; }
+.catalog > .filters { position:sticky; top:var(--header-offset, 84px); max-height:calc(100vh - 96px); overflow:auto; background:var(--surface-1); border:1px solid var(--border); border-radius:12px; padding:1rem; box-shadow:0 6px 18px rgba(0,0,0,0.35); }
+
+/* Promo strip (compact: half-height) */
+.promo-strip { width:100%; position:relative; left:0; right:0; overflow:hidden; background: #ffffff; color: #111; border-bottom: 1px solid rgba(0,0,0,0.04); padding: 3px 0; }
+.promo-track { display:flex; gap:8px; align-items:center; white-space:nowrap; will-change: transform; transform: translateZ(0); }
+.promo-inner { display:flex; gap:8px; align-items:center; padding:4px 8px; }
+.promo-item { display:inline-flex; align-items:center; gap:8px; padding:2px 4px; background: transparent; color: inherit; border-radius:6px; }
+.promo-item .promo-name { font-weight:700; color:#111; font-size:0.82rem; max-width:18ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:1; }
+.promo-price { display:inline-flex; gap:6px; align-items:center; font-weight:800; }
+.promo-price .currency { font-size:0.72rem; color:#6f5510; }
+.promo-price .amount { font-size:0.86rem; background: linear-gradient(90deg,#8a5a08 0%, #b8860b 50%, #ffd580 100%); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight:900; text-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+.promo-item .discount-badge { margin-left:6px; transform: skewX(-12deg); min-height:16px; padding:.08rem .32rem; }
+.promo-item .discount-badge .discount-badge-text { transform: skewX(12deg) translateY(0); color: color-mix(in srgb, var(--accent) 68%, #000 32%); font-weight:900; font-size:0.68rem; }
+
+/* separators between items */
+.promo-item + .promo-item { border-left: 1px solid rgba(0,0,0,0.04); padding-left:6px; }
+
+/* animation uses CSS variables set by JS: --promo-scroll-distance (px negative) and --promo-duration (s) */
+.promo-track { animation-name: promoScroll; animation-timing-function: linear; animation-iteration-count: infinite; animation-duration: var(--promo-duration, 18s); animation-play-state: running; }
+@keyframes promoScroll { from { transform: translateX(0); } to { transform: translateX(var(--promo-scroll-distance)); } }
+
+/* pause on hover/focus for accessibility */
+.promo-strip:focus-within .promo-track, .promo-strip:hover .promo-track { animation-play-state: paused; }
+
+/* hide on very small screens to avoid covering content */
+@media (max-width: 640px) { .promo-strip { display:none !important; } .catalog > .filters { top: var(--header-offset, 64px); } }
+
+/* dragging state visuals */
+.promo-strip.dragging { cursor: grabbing; }
+.promo-strip.dragging .promo-item { user-select: none; -webkit-user-select: none; }
+.catalog > .filters .filter-row { display:flex; flex-direction:column; gap:.6rem; align-items:stretch; }
+.catalog > .filters .filter-row input[type=text], .catalog > .filters .filter-row input[type=number], .catalog > .filters .filter-row select { width:100%; }
+@media (max-width: 979px) {
+  .catalog { display:block; }
+  .catalog > .filters { position:static; top:auto; max-height:none; overflow:visible; box-shadow:none; border-radius:var(--radius-md); margin-bottom:1rem; }
+}
